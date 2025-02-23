@@ -10,35 +10,32 @@ describe('Load Testing', function() {
   this.timeout(60000);
 
   before(function(done) {
-    var Schema;
+    // Set up the connection configuration
+    var connection = Config;
+    connection.identity = 'test';
 
-    // Register The Collection
-    Adapter.registerCollection({ identity: 'test', config: Config }, function(err) {
-      if(err) done(err);
+    // Set up the collection
+    var collection = { 
+      identity: 'foobar', 
+      definition: Fixture 
+    };
+    collection.definition.connection = 'test';
 
-      // Define The Collection
-      Adapter.define('test', Fixture, function(err, schema) {
-        if(err) return done(err);
-        Schema = schema;
-        done();
-      });
-    });
+    // Register connection with the collection
+    Adapter.registerConnection(connection, { 'foobar': collection }, done);
   });
 
   describe('create with x connection', function() {
-
     it('should not error', function(done) {
-
-      // generate x users
+      // Generate x users
       async.times(CONNECTIONS, function(n, next){
-
         var data = {
           first_name: Math.floor((Math.random()*100000)+1),
           last_name: Math.floor((Math.random()*100000)+1),
           email: Math.floor((Math.random()*100000)+1)
         };
 
-        Adapter.create('test', data, next);
+        Adapter.create('test', 'foobar', data, next);
       }, function(err, users) {
         assert(!err);
         assert(users.length === CONNECTIONS);
@@ -47,4 +44,8 @@ describe('Load Testing', function() {
     });
   });
 
+  // Clean up after tests
+  after(function(done) {
+    Adapter.teardown('test', done);
+  });
 });

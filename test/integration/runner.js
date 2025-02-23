@@ -69,9 +69,7 @@ new TestRunner({
   config: {
     host: 'localhost',
     database: 'sails-mongo',
-    port: 27018,
-    schema: true,
-    poolSize: 1
+    port: 27017
   },
 
 
