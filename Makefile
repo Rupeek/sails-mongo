@@ -2,7 +2,7 @@
 MOCHA_OPTS= --check-leaks --timeout 30000
 REPORTER = dot
 
-test: test-integration
+test: test-unit test-integration
 
 test-integration:
 	echo 'DROPPING ALL COLLECTIONS IN "sails-mongo"'
