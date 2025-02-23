@@ -1,7 +1,7 @@
 var Query = require('../../../lib/query');
 var assert = require('assert');
 var _ = require('lodash');
-var ObjectID = require('mongodb').ObjectID;
+var { ObjectId } = require('mongodb');
 
 describe('Query', function () {
   "use strict";
@@ -87,12 +87,12 @@ describe('Query', function () {
     describe('with objectid values', function () {
 
       it('should accept objectid in Equal Pair', function () {
-        var _id = new ObjectID();
+        var _id = new ObjectId();
         var where = {
-          user: new ObjectID(_id)
+          user: new ObjectId(_id)
         };
         var expect = {
-          user: new ObjectID(_id)
+          user: new ObjectId(_id)
         };
         var Q = new Query({ where: where }, { user: 'objectid' });
         var actual = Q.criteria.where;
@@ -100,9 +100,9 @@ describe('Query', function () {
       });
 
       it('should accept objectid string', function () {
-        var _id = new ObjectID();
+        var _id = new ObjectId();
         var where = {
-          user: '' + new ObjectID(_id)
+          user: '' + new ObjectId(_id)
         };
 
         var Q = new Query({ where: where }, { user: 'objectid' });
@@ -111,12 +111,12 @@ describe('Query', function () {
       });
 
       it('should accept objectid in Not Pair', function () {
-        var _id = new ObjectID();
+        var _id = new ObjectId();
         var where = {
-          user: { '!': new ObjectID(_id) }
+          user: { '!': new ObjectId(_id) }
         };
         var expect = {
-          user: { $ne: new ObjectID(_id) }
+          user: { $ne: new ObjectId(_id) }
         };
         var Q = new Query({ where: where }, { user: 'objectid' });
         var actual = Q.criteria.where;
@@ -124,12 +124,12 @@ describe('Query', function () {
       });
 
       it('should accept objectid in In Pair', function () {
-        var _ids = [new ObjectID(), new ObjectID()];
+        var _ids = [new ObjectId(), new ObjectId()];
         var where = {
-          user: [new ObjectID(_ids[0]), new ObjectID(_ids[1])]
+          user: [new ObjectId(_ids[0]), new ObjectId(_ids[1])]
         };
         var expect = {
-          user: { $in: [new ObjectID(_ids[0]), new ObjectID(_ids[1])] }
+          user: { $in: [new ObjectId(_ids[0]), new ObjectId(_ids[1])] }
         };
         var Q = new Query({ where: where }, { user: 'objectid' });
         var actual = Q.criteria.where;
@@ -138,12 +138,12 @@ describe('Query', function () {
       });
 
       it('should accept objectid in Object Pair', function () {
-        var _id = new ObjectID();
+        var _id = new ObjectId();
         var where = {
-          user: { '>': new ObjectID(_id) }
+          user: { '>': new ObjectId(_id) }
         };
         var expect = {
-          user: { $gt: new ObjectID(_id) }
+          user: { $gt: new ObjectId(_id) }
         };
         var Q = new Query({ where: where }, { user: 'objectid' });
         var actual = Q.criteria.where;
@@ -156,7 +156,7 @@ describe('Query', function () {
     describe('with `in` clause', function () {
 
       it('should parse as `$in` clause', function () {
-        var id1 = new ObjectID(), id2 = new ObjectID(), id3 = new ObjectID();
+        var id1 = new ObjectId(), id2 = new ObjectId(), id3 = new ObjectId();
         var where = {
           id: [id1.toString(), id2.toString(), id3.toString() ]
         };
@@ -174,7 +174,7 @@ describe('Query', function () {
     describe('with `not in` clause', function () {
 
       it('should parse as `$nin` clause', function () {
-        var id1 = new ObjectID(), id2 = new ObjectID(), id3 = new ObjectID();
+        var id1 = new ObjectId(), id2 = new ObjectId(), id3 = new ObjectId();
         var where = {
           id: { '!': [id1.toString(), id2.toString(), id3.toString() ] }
         };
